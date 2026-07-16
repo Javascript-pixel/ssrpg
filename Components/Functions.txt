@@ -1,0 +1,256 @@
+//FUNCS
+
+func CanUse(x)
+ return item.GetCooldown(x) <= 0
+ ^& item.CanActivate()
+
+func E(L,R)
+ equipR @R@
+ equipL @L@
+
+
+
+//ACTIVATE
+//ESPECIAL
+
+func BladeAt(i) 
+ return screen.i = i & Blade()
+
+var wait = 0
+func Blade()
+ ?item.GetCooldown(＂blade＂) <= 0
+  wait++
+  screen.Next()
+  ?wait > 18
+   equip blade
+   activate R
+   screen.ResetOffset()
+   wait = 0
+  return true
+ return false
+
+func Skeleton()
+ ?item.GetCooldown(＂skeleton_arm＂) <= 0
+  equip Euronymous 
+  ?item.CanActivate()
+   activate R
+
+
+
+//EXECUTE
+
+func Bard()
+ return execute_twohanded(＂bardiche＂,
+ ^＂Polaris＂)
+
+func Hammer()
+ return execute_twohanded(＂heavy_hammer＂,
+ ^＂False Prophet＂)
+
+func execute_twohanded(y,v)
+ ?(CanUse(y) | item.right = v 
+ ^& item.right.state = 2)
+  equip @v@
+  activate R
+  return true
+ return false
+
+
+
+//STAFFS
+
+func Eternity()
+ ?armor >= 1
+  return InstantTwoHanded(＂staff_ice＂,
+  ^＂Eternity Staff＂)
+ :
+  >o-11,-2,#rainFF,Out Of Armor For Eternity
+
+func Infernal()
+ ?armor >= 6
+  return InstantTwoHanded(＂staff_fire＂,
+  ^＂Heretic Staff＂)
+ :
+  >o-11,-2,#rainFF,Out Of Armor For Infernal
+
+func Graspp()
+ ?armor >= 2
+  return InstantTwoHanded(＂staff_aether＂,
+  ^＂Ocultism Staff＂)
+ :
+  >o-10,-2,#rainFF,Out Of Armor For Graspp
+
+func Prevention()
+ ?armor >= 4
+  return InstantTwoHanded(＂staff_vigor＂,
+  ^＂Prevention Staff＂)
+ :
+  >o-12,-2,#rainFF,Out Of Armor For Prevention
+
+func Berserk()
+ ?armor >= 8
+  return InstantTwoHanded(＂staff_poison＂,
+  ^＂Pagan Staff＂)
+ :
+  >o-11,-2,#rainFF,Out Of Armor For Berserk
+
+func Acrobatic()
+ ?armor >= 3
+  return InstantTwoHanded(＂staff_stone＂,
+  ^＂Acrobatic Staff＂)
+ :
+  >o-11,-2,#rainFF,Out Of Armor For Acrobatic
+
+func Quarter(enchant)
+ return InstantTwoHanded(＂quarterstaff＂,
+ ^＂quarterstaff＂ + enchant)
+
+func Shovel()
+ return InstantTwoHanded(＂shovel＂,＂shovel＂)
+
+func InstantTwoHanded(y,v)
+ ?(CanUse(y))
+  equip @v@
+  activate R
+  return true
+ return false
+
+
+
+//WANDS
+
+func Mask()
+ return InstantOne(R,＂mask＂,＂Dystopia＂)
+
+func Atalis(m)
+ return InstantOne(m,＂aether_talisman＂,
+ ^＂Dunkelheit＂)
+
+func Ftalis(m)
+ return InstantOne(m,＂fire_talisman＂,
+ ^＂A Fine Day To Die＂)
+
+func Frost(m)
+ ?armor >= 3
+  return InstantOne(m,＂wand_ice＂,＂Frost Wand＂)
+ :
+  >o-10,-2,#rainFF,Out Of Armor For Frost
+
+func Explosive(m)
+ ?armor >= 4
+  return InstantOne(m,＂wand_fire＂,
+  ^＂Explosive Wand＂)
+ :
+  >o-12,-2,#rainFF,Out Of Armor For Explosive
+
+func Calamity(m)
+ ?armor >= 14
+  return InstantOne(m,＂wand_aether＂,
+  ^＂Calamity Wand＂)
+ :
+  >o-12,-2,#rainFF,Out Of Armor For Calamity
+
+func Reset(m)
+ ?armor >= 1
+  return InstantOne(m,＂wand_vigor＂,＂Reset Wand＂)
+ :
+  >o-10,-2,#rainFF,Out Of Armor For Reset
+
+func Plague(m)
+ ?armor >= 6
+  return InstantOne(m,＂wand_poison＂,
+  ^＂Plague Wand＂)
+ :
+  >o-10,-2,#rainFF,Out Of Armor For Plague
+
+func Gravity(m)
+ ?armor >= 0
+  return InstantOne(m,＂wand_stone＂,
+  ^＂Gravity Wand＂)
+ :
+  >o-11,-2,#rainFF,Out Of Armor For Gravity
+
+func InstantOne(h,y,v)
+ ?(CanUse(y))
+  ?h = l | h = L
+   equipL @v@
+   activate L
+  :?h = r | h = R
+   equipR @v@
+   activate R
+  return true
+ return false
+
+
+//DASH
+
+func B()
+ return autoA(＂bash＂,＂Advent Of Panurge＂)
+
+func D()
+ return autoA(＂dash＂,＂Dash＂)
+
+func Dodge(s,t)
+ ?foe.state = s & foe.time = t
+  return autoA(＂mind＂,＂Mind＂)
+
+func autoA(y,v)
+ ?(CanUse(y))
+  equip @v@
+  return true
+ return false
+
+func Dash()
+ ?D()
+  return
+ :?B()
+  return
+  return true
+ return false
+
+func Bash()
+ ?B()
+  return
+ :?D()
+  return
+  return true 
+ return false
+
+
+
+//TECHNIQUES
+
+func Smooth(smt,d)
+ ?totaltime % 2 = 0
+  equip @smt@
+ :
+  equipL trisk
+  equipR @d@
+
+func Moon(w1,w2)
+ var f = 3
+ ?buffs.string = ＂Berserk＂
+  f = 2
+ ?totaltime % 3 = 0
+  equipR @w1@
+  equipL moon
+ :?totaltime % 3 = 1
+  equipR @w2@
+  equipL moon
+ :
+  equipR @w2@
+  equipL @w1@
+
+func Moonj(w1,w2)
+ ?totaltime % 4 = 0
+  equipL moon
+  equipR @w1@
+ :?totaltime % 4 = 1
+  equipL @w1@
+  equipR @w2@
+ :?totaltime % 4 = 2
+  equipL moon
+  equipR @w2@
+ :
+  equipL @w2@
+  equipR @w1@
