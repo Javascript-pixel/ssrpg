@@ -254,3 +254,19 @@ func Moonj(w1,w2)
  :
   equipL @w2@
   equipR @w1@
+
+//CODE / SPECIAL FUNCTIONS 
+
+func Perma(s,p)
+ ?item.GetCooldown("quarterstaff") <= 0 
+ ^& item.CanActivate()
+  equip quarterstaff
+  activate R
+ :?pickup.distance < 9
+  equipL Star
+ :
+  equipL Trisk
+  ?buffs.string ! p
+   equipR Rust In Peace
+  :
+   equipR Dystopia
