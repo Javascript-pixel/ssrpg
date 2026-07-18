@@ -267,6 +267,6 @@ func Perma(s,p)
  :
   equipL Trisk
   ?buffs.string ! p
-   equipR Rust In Peace
+   equipR @s@
   :
    equipR Dystopia
